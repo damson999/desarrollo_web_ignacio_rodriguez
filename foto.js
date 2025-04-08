@@ -6,5 +6,5 @@ function mostrarFoto(src) {
 
 function cerrarFoto() {
     document.getElementById("visor").style.display = "none";
-    document.getElementById("fotoGrande").src = "";
+    document.getElementById("fotoGrande").src = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 }

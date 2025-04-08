@@ -1,8 +1,11 @@
 <!DOCTYPE html>
+<html lang="es">
 
 
 <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Agregar Actividad</title>
     
     <style>
@@ -81,7 +84,7 @@
                         <option value="tiktok">TikTok</option>
                         <option value="otro">Otro</option>
                     </select>
-                    <input type="text" name="contacto_id" placeholder="ID o URL" minlenght="4" maxlength="50">
+                    <input type="text" name="contacto_id" placeholder="ID o URL" minlength="4" maxlength="50">
                 </td>
             </tr>
         </table>
@@ -110,6 +113,7 @@
                 <td>Tema</td>
                 <td>
                     <select name="tema" required>
+                        <option value="">Seleccione una opción</option>
                         <option value="musica">Música</option>
                         <option value="deporte">Deporte</option>
                         <option value="ciencias">Ciencias</option>
@@ -121,7 +125,7 @@
                         <option value="comida">Comida</option>
                         <option value="otro">Otro</option>
                     </select>
-                    <input type="text" name="tema_otro" placeholder="Especifique si es 'Otro'" minlenght="3" maxlength="15">
+                    <input type="text" name="tema_otro" placeholder="Especifique si es 'Otro'" minlength="3" maxlength="15">
                 </td>
             </tr>
             <tr>
@@ -140,26 +144,30 @@
     </form>
 
     <br>
-
-    <tr>
-        <td colspan="2" style="text-align: center;">
-          <button type="button" onclick="confirmarEnvio()">Agregar esta actividad</button>
-        </td>
-      </tr>
-      </table>
-      </form>
+    
+    <div id="formulario-container">
+        <form>
+            <table> 
+                    <tr>
+                        <td style="text-align: center;">
+                            <button type="button" onclick="confirmarEnvio()">Agregar esta actividad</button>
+                        </td>
+                    </tr>
+            </table>
+        </form>
+    </div>
       
-      <div id="confirmacion" style="display: none; text-align: center; margin-top: 20px;">
+    <div id="confirmacion" style="display: none; text-align: center; margin-top: 20px;">
         <p>¿Está seguro que desea agregar esta actividad?</p>
         <button onclick="procesarConfirmacion(true)">Sí, estoy seguro</button>
         <button onclick="procesarConfirmacion(false)">No, no estoy seguro, quiero volver al formulario</button>
-      </div>
+    </div>
       
      
-      <div id="mensaje-final" style="display: none; text-align: center; margin-top: 20px;">
+    <div id="mensaje-final" style="display: none; text-align: center; margin-top: 20px;">
         <p>Hemos recibido su información, muchas gracias y suerte en su actividad.</p>
         <button onclick="volverAPortada()">Volver a la portada</button>
-      </div>
+    </div>
 
 
 
