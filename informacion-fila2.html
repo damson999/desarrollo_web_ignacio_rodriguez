@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Detalle de Actividad</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;}
+
+        h1 {
+            text-align: center;}
+
+        .info {
+            max-width: 800px;
+            margin: auto;}
+
+        .info p {
+            margin: 10px 0;}
+
+        .fotos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;}
+
+        .fotos img {
+            width: 320px;
+            height: 240px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 6px;}
+
+
+        #visor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;}
+
+        #visor img {
+            width: 800px;
+            height: 600px;
+            object-fit: contain;
+            border-radius: 6px;}
+
+        #cerrar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #74a3d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;}
+
+        .botones {
+            text-align: center;
+            margin-top: 40px;}
+
+        .botones a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #74a3d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;}
+
+        .botones a:hover {
+            background-color: #74a3d2;}
+    </style>
+</head>
+
+<body>
+
+    <h1>Detalles de la Actividad</h1>
+
+    <div class="info">
+        <p><strong>Título:</strong> Entrenamiento para fisico culturismo</p>
+        <p><strong>Fecha de inicio:</strong> 2025-07-15 </p>
+        <p><strong>Fecha de término:</strong> 2025-09-15 </p>
+        <p><strong>Descripción:</strong> "El Gimnasio 'Yeah Buddy!' – Dirigido por Ronnie Coleman"
+            <br><br>    
+            Bienvenidos al templo del hierro, donde las pesas pesan más que tus problemas existenciales y el aire huele a proteína, sudor y… ¿es eso creatina o el perfume de Ronnie?
+            <br><br> 
+            En este santuario del músculo, no solo aprenderás a levantar peso, sino también a gritar "LIGHTWEIGHT, BABY!" cada vez que alguien pregunte si necesitas ayuda (la respuesta siempre es NO).
+            <br><br> 
+            Clases destacadas:
+            <br><br> 
+            "Sentadillas o Muerte" (literalmente, porque si Ronnie te ve haciendo media repetición, te hará repetirlo… hasta el colapso).
+            <br><br> 
+            "Curl de Bíceps y Filosofía Existencial" ("¿Por qué duele tanto? ¿Quién soy? ¡YEAAAH BUDDY!").
+            <br><br> 
+            "Cómo Caminar Derecho Después de Leg Day" (spoiler: no se puede).
+            <br><br> 
+            Incluye:
+            <br><br> 
+            Pesas (no aptas para mortales comunes, solo para futuros Mr. Olympia o almas perdidas).
+            <br><br> 
+            Suplementos (misteriosos pero efectivos… probablemente solo sean batidos de pollo y lágrimas).
+            <br><br> 
+            Motivación 24/7 (Ronnie apareciendo de la nada para gritarte "¡UNA MÁS!" cuando ya no sientes las piernas).
+            <br><br> 
+            Requisitos:
+            <br><br> 
+            Saber distinguir entre dolor y "es solo Ronnie siendo cariñoso".
+            <br><br> 
+            Firme convicción de que el DOMS (dolor post-entreno) es solo "amor de músculo".
+            <br><br> 
+            Opcional: Una columna vertebral de repuesto (por si acaso).
+            <br><br> 
+            Frase motivacional de la escuela: 
+            <br><br>
+            "Aquí no construimos cuerpos… construimos leyendas que luego no pueden alcanzar el papel higiénico."
+            
+ 
+         </p>
+
+        <div class="fotos">
+
+            <img src="https://i.pinimg.com/736x/a0/4b/0b/a04b0b4d8f1bd228328db1c4067c4f9e.jpg" alt="Foto 1" onclick="mostrarFoto(this.src)">
+            <img src="https://farm2.static.flickr.com/1204/868453562_827155d733_m.jpg" alt="Foto 2" onclick="mostrarFoto(this.src)">
+
+        </div>
+    </div>
+
+    <div id="visor">
+        <img id="fotoGrande" src="" alt="Foto Ampliada">
+        <button id="cerrar" onclick="cerrarFoto()">Cerrar</button>
+    </div>
+
+    <div class="botones">
+        <a href="listado-actividades.html">Volver al listado de actividades</a>
+        <a href="index.html">Volver a la portada</a>
+    </div>
+
+    <script src="foto.js"></script>
+
+
+
+</body>
+</html>

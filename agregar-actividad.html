@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+
+<head>
+
+    <title>Agregar Actividad</title>
+    
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;}
+        
+            th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;}
+        
+            th {
+            background-color: #f2f2f2;}
+    </style>
+
+</head>
+<body>
+
+    <h2>Informar Actividad</h2>
+
+    <form action="procesar-actividad.php" method="post">
+        
+        <h3>¿Dónde?</h3>
+        
+        <table>
+            <tr>
+                <th>Dato</th>
+                <th>Presentación</th>
+            </tr>
+            <tr>
+                <td>Región</td>
+                <td><select name="region" id="region" required>
+                        <option value="">Seleccione una región</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td>Comuna</td>
+                <td><select name="comuna" id="comuna" required>
+                        <option value="">Seleccione una comuna</option>
+                    </select></td>
+            </tr>
+            <tr>
+                <td>Sector</td>
+                <td><input type="text" name="sector" maxlength="100"></td>
+            </tr>
+        </table>
+
+        <h3>¿Quién organiza?</h3>
+        
+        <table>
+            <tr>
+                <th>Dato</th>
+                <th>Presentación</th>
+            </tr>
+            <tr>
+                <td>Nombre</td>
+                <td><input type="text" name="nombre" maxlength="200" required></td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td><input type="email" name="email" maxlength="100" required></td>
+            </tr>
+            <tr>
+                <td>Número de celular</td>
+                <td><input type="tel" name="celular" pattern="\+\d{3}\.\d{8}" placeholder="+569.12345678"></td>
+            </tr>
+            <tr>
+                <td>Contactar por</td>
+                <td>
+                    <select name="contacto">
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="telegram">Telegram</option>
+                        <option value="x">X</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="tiktok">TikTok</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <input type="text" name="contacto_id" placeholder="ID o URL" minlenght="4" maxlength="50">
+                </td>
+            </tr>
+        </table>
+
+ 
+        <h3>¿Cuándo y de qué trata?</h3>
+        
+        <table>
+            <tr>
+                <th>Dato</th>
+                <th>Presentación</th>
+            </tr>
+            <tr>
+                <td>Día y hora de inicio</td>
+                <td><input type="datetime-local" name="inicio" id="inicio" required></td>
+            </tr>
+            <tr>
+                <td>Día y hora de término</td>
+                <td><input type="datetime-local" name="termino" id="termino" ></td>
+            </tr>
+            <tr>
+                <td>Descripción</td>
+                <td><textarea name="descripcion" cols="50" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td>Tema</td>
+                <td>
+                    <select name="tema" required>
+                        <option value="musica">Música</option>
+                        <option value="deporte">Deporte</option>
+                        <option value="ciencias">Ciencias</option>
+                        <option value="religion">Religión</option>
+                        <option value="politica">Política</option>
+                        <option value="tecnologia">Tecnología</option>
+                        <option value="juegos">Juegos</option>
+                        <option value="baile">Baile</option>
+                        <option value="comida">Comida</option>
+                        <option value="otro">Otro</option>
+                    </select>
+                    <input type="text" name="tema_otro" placeholder="Especifique si es 'Otro'" minlenght="3" maxlength="15">
+                </td>
+            </tr>
+            <tr>
+                <td>Fotos</td>   
+                <td>
+                    <div id="foto-container">
+                        <input type="file" name="fotos[]" accept="image/*" required>
+                    </div>
+                    <br>
+                    <button type="button" onclick="agregarFoto()">Agregar otra foto</button>
+                    <small>Máximo 5 fotos</small>
+                </td>
+            </tr>
+        </table>
+
+    </form>
+
+    <br>
+
+    <tr>
+        <td colspan="2" style="text-align: center;">
+          <button type="button" onclick="confirmarEnvio()">Agregar esta actividad</button>
+        </td>
+      </tr>
+      </table>
+      </form>
+      
+      <div id="confirmacion" style="display: none; text-align: center; margin-top: 20px;">
+        <p>¿Está seguro que desea agregar esta actividad?</p>
+        <button onclick="procesarConfirmacion(true)">Sí, estoy seguro</button>
+        <button onclick="procesarConfirmacion(false)">No, no estoy seguro, quiero volver al formulario</button>
+      </div>
+      
+     
+      <div id="mensaje-final" style="display: none; text-align: center; margin-top: 20px;">
+        <p>Hemos recibido su información, muchas gracias y suerte en su actividad.</p>
+        <button onclick="volverAPortada()">Volver a la portada</button>
+      </div>
+
+
+
+    <script src="region_comuna.js"></script>
+    <script src="region-comunas.js"></script>
+    <script src="fechayhora.js"></script>
+    <script src="agregatfoto.js"></script>
+    <script src="agregaract.js"></script>
+
+
+</body>
+</html>

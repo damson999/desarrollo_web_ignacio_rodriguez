@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Detalle de Actividad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;}
+
+        h1 {
+            text-align: center;}
+
+        .info {
+            max-width: 800px;
+            margin: auto;}
+
+        .info p {
+            margin: 10px 0;}
+
+        .fotos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;}
+
+        .fotos img {
+            width: 320px;
+            height: 240px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 6px;}
+
+   
+        #visor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;}
+
+        #visor img {
+            width: 800px;
+            height: 600px;
+            object-fit: contain;
+            border-radius: 6px;}
+
+        #cerrar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #74a3d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;}
+
+        .botones {
+            text-align: center;
+            margin-top: 40px;}
+
+        .botones a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #74a3d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;}
+
+        .botones a:hover {
+            background-color: #74a3d2;}
+    </style>
+</head>
+
+<body>
+
+    <h1>Detalles de la Actividad</h1>
+
+    <div class="info">
+        <p><strong>Título:</strong> Clases de canto</p>
+        <p><strong>Fecha de inicio:</strong> 2025-09-11 </p>
+        <p><strong>Fecha de término:</strong> 2026-03-05 </p>
+        <p><strong>Descripción:</strong> El Taller de Canto 'Si No Gritas, No Sirves' – Dirigido por JB The Voice (El pequeño que derriba a los gigantes)
+            <br><br>
+            Bienvenidos al lugar donde las gargantas se sacrifican en nombre del arte y los vecinos llaman a la policía creyendo que hay un exorcismo en progreso. Aquí, si no terminas con las venas del cuello marcadas, es porque no le pusiste suficiente alma (o porque ya te desmayaste).
+            <br><br>
+            En este santuario vocal, no solo aprenderás a gritar como si el infierno estuviera en tu garganta, sino también a explicarle al médico por qué tu rango vocal ahora incluye silbidos ultrasónicos que rompen copas.
+            <br><br>
+            Clases Destacadas:
+            <br><br>
+            Notas Altas: De 'Ay, me duele' a '¡Soy un theremín humano!' (spoiler: vas a llorar, pero sonará épico).
+            <br><br>
+            Growls & Screams: Cómo sonar como un demonio sin vender tu alma" (técnicas avaladas por satánicos y abuelitas escandalizadas).
+            <br><br>
+            Respiración Diafragmática o Cómo evitar morir en el primer coro (útil para no acabar azul como un pitufo).
+            <br><br>
+            Incluye:
+            <br><br>
+            Botella de agua (simbólica, porque nada salvará tu garganta).
+            <br><br>
+            Pastillas para la voz (que JB ignora porque "el dolor es mental, hermano").
+            <br><br>
+            Feedback de JB: "¡Más potencia! ¡QUE SE ESCUCHE EL TERROR EN TU VOZ!" (mientras tú ves visiones blancas).
+            <br><br>
+            Requisitos:
+            <br><br>
+            Saber gemir como si te pisaran (nivel básico).
+            <br><br>
+            Tener vecinos sordos o una guarida a prueba de sonido.
+            <br><br>
+            Opcional: Un sacerdote de backup (por si acaso algo se te pega después de tanto growl).
+            <br><br>
+            Frase Motivacional del Taller:
+            <br><br>
+            "Si JB puede cantar 'CHANEL' sin desmayarse, tú puedes gritar una nota sin que tu alma abandone el cuerpo… quizá."
+            <br><br>
+            (Nota: JB no se hace responsable de pérdidas de voz, dignidad o cordura, pero si llegas al final, te dará un abrazo… y una factura del otorrino).
+            <br><br>
+         </p>
+
+        <div class="fotos">
+   
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4Hns27i74fO2a_1eeurb-MUGedMVBUfNxHg&s" alt="Foto 1" onclick="mostrarFoto(this.src)">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQaB5UqBCd7kB1B5Mc_6K072x5UjltI11RFSPp2doQIY17OB0v26hG09hj4gU-uQUt-xsY&usqp=CAU" alt="Foto 2" onclick="mostrarFoto(this.src)">
+        
+        </div>
+    </div>
+
+  
+    <div id="visor">
+        <img id="fotoGrande" src="" alt="Foto Ampliada">
+        <button id="cerrar" onclick="cerrarFoto()">Cerrar</button>
+    </div>
+
+   
+    <div class="botones">
+        <a href="listado-actividades.html">Volver al listado de actividades</a>
+        <a href="index.html">Volver a la portada</a>
+    </div>
+
+    <script src="foto.js"></script>
+
+
+
+</body>
+</html>

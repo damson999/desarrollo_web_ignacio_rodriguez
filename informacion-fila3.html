@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<head>
+
+    <title>Detalle de Actividad</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;}
+
+        h1 {
+            text-align: center;}
+
+        .info {
+            max-width: 800px;
+            margin: auto;}
+
+        .info p {
+            margin: 10px 0;}
+
+        .fotos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;}
+
+        .fotos img {
+            width: 320px;
+            height: 240px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid #ccc;
+            border-radius: 6px;}
+
+        #visor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;}
+
+        #visor img {
+            width: 800px;
+            height: 600px;
+            object-fit: contain;
+            border-radius: 6px;}
+
+        #cerrar {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #74a3d2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;}
+
+        .botones {
+            text-align: center;
+            margin-top: 40px;}
+
+        .botones a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #74a3d2;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;}
+
+        .botones a:hover {
+            background-color: #74a3d2;}
+    
+    </style>
+</head>
+
+<body>
+
+    <h1>Detalles de la Actividad</h1>
+
+    <div class="info">
+        <p><strong>Título:</strong> Entrenamiento para fisico culturismo</p>
+        <p><strong>Fecha de inicio:</strong> 2025-08-04 </p>
+        <p><strong>Fecha de término:</strong> 2025-10-01 </p>
+        <p><strong>Descripción:</strong> El Taller de Manga 'No Es Solo Copiar a Naruto' – Dirigido por Masashi Kishimoto
+            <br><br>
+            Bienvenidos al lugar donde los sueños de ser mangaka chocan con la realidad… y con la mano adolorida de dibujar 300 páginas en una noche. Aquí el lápiz es tu ninja way y los borrones, tus peores enemigos (peores que Madara).
+            <br><br>
+            En este dojo artístico, no solo aprenderás a dibujar ojos gigantes que no siguen las leyes de la anatomía, sino también a justificar por qué todos tus personajes tienen pelo que desafía la gravedad.
+            <br><br>
+            Clases Destacadas:
+            <br><br>
+            Dibujo de Personajes: De 'Cara Genérica' a 'Protagonista con Cicatriz y Traumático' (porque el edge vende).
+            <br><br>
+            Fondos: O Cómo Evitar Dibujarlos Usando Efectos de Viento/Humo (técnica profesional usada en el 90% del manga).
+            <br><br>
+            Tramas: Cómo Hacer que un Arco de Relleno Dure 50 Capítulos (Kishimoto se ríe en exámenes Chunin infinitos).
+            <br><br>
+            Incluye:
+            <br><br>
+            Lápices 2B (que desaparecerán misteriosamente, como los padres de los protagonistas).
+            <br><br>
+            Borradores (pero no para tus errores de perspectiva, esos se quedan por arte conceptual).
+            <br><br>
+            Consejos de Kishimoto (ej: "Si no sabes cómo terminar una pelea… ¡haz un flashback!").
+            <br><br>
+            Requisitos:
+            <br><br>
+            Saber dibujar al menos un ojo compartido (el otro ya lo harás en el anime).
+            <br><br>
+            Tolerancia a la cafeína (las deadlines de Shōnen Jump no perdonan).
+            <br><br>
+            Opcional: Un contrato con el diablo (para mantenerte relevante después del primer arco).
+            <br><br>
+            Frase Motivacional del Taller:
+            "Si Boruto puede ser manga… ¡tú también puedes!" 
+            <br><br>
+            (Nota: Kishimoto no se hace responsable de crisis existenciales al darte cuenta de que dibujar mangas es el verdadero ninja hell).
+         </p>
+
+        <div class="fotos">
+ 
+            <img src="https://preview.redd.it/jnofoqbxu3l91.jpg?width=640&crop=smart&auto=webp&s=7cb6b771987d01c7e3cb28a897bed9db325fe043" alt="Foto 1" onclick="mostrarFoto(this.src)">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSQ8PjcSkdMiqalk48-XLzWO4mgCmGiyXhYA&s" alt="Foto 2" onclick="mostrarFoto(this.src)">
+
+        </div>
+    </div>
+
+    <div id="visor">
+        <img id="fotoGrande" src="" alt="Foto Ampliada">
+        <button id="cerrar" onclick="cerrarFoto()">Cerrar</button>
+    </div>
+
+    <div class="botones">
+        <a href="listado-actividades.html">Volver al listado de actividades</a>
+        <a href="index.html">Volver a la portada</a>
+    </div>
+
+    <script src="foto.js"></script>
+
+
+
+</body>
+</html>
