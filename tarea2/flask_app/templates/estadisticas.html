@@ -21,20 +21,20 @@
 
 
     <h2>Actividades por día</h2>
-    <img src="grafico-lineas.png" alt="Gráfico de Líneas: Actividades por Día">
+    <img src="{{ url_for('static', filename='uploads/grafico-lineas.png') }}" alt="Gráfico de Líneas: Actividades por Día">
 
 
     <h2>Actividades por tipo</h2>
-    <img src="grafico-torta.png" alt="Gráfico de Torta: Actividades por Tipo">
+    <img src="{{ url_for('static', filename='uploads/grafico-torta.png') }}" alt="Gráfico de Torta: Actividades por Tipo">
 
 
     <h2>Actividades por mes y hora</h2>
-    <img src="grafico-barras.png" alt="Gráfico de Barras: Actividades por Mes y Hora">
+    <img src="{{ url_for('static', filename='uploads/grafico-barras.png') }}" alt="Gráfico de Barras: Actividades por Mes y Hora">
 
 
     <br><br>
 
-    <a href="index.html">Volver a la portada</a>
+    <a href="{{ url_for('portada') }}">Volver a la portada</a>
 
 </body>
 </html>

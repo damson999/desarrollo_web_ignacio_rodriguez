@@ -25,9 +25,10 @@
 </head>
 <body>
 
-    <h2>Informar Actividad</h2>
+    <h2 id="titulo"> Informar Actividad</h2>
 
-    <form action="procesar-actividad.php" method="post">
+    <form id="formulario" action="/agregar_actividad" method="POST" enctype="multipart/form-data">
+
         
         <h3>¿Dónde?</h3>
         
@@ -145,16 +146,8 @@
 
     <br>
     
-    <div id="formulario-container">
-        <form>
-            <table> 
-                    <tr>
-                        <td style="text-align: center;">
-                            <button type="button" onclick="confirmarEnvio()">Agregar esta actividad</button>
-                        </td>
-                    </tr>
-            </table>
-        </form>
+    <div id="formulario-container" style="text-align: center;">
+        <button id="boton-volver" type="button" onclick="confirmarEnvio()">Agregar esta actividad</button>
     </div>
       
     <div id="confirmacion" style="display: none; text-align: center; margin-top: 20px;">
@@ -163,20 +156,46 @@
         <button onclick="procesarConfirmacion(false)">No, no estoy seguro, quiero volver al formulario</button>
     </div>
       
-     
-    <div id="mensaje-final" style="display: none; text-align: center; margin-top: 20px;">
+    <div id="mensaje-final" style="text-align: center; margin-top: 20px; {% if not exito %}display: none;{% endif %}">
         <p>Hemos recibido su información, muchas gracias y suerte en su actividad.</p>
-        <button onclick="volverAPortada()">Volver a la portada</button>
     </div>
 
 
 
-    <script src="region_comuna.js"></script>
-    <script src="region-comunas.js"></script>
-    <script src="fechayhora.js"></script>
-    <script src="agregatfoto.js"></script>
-    <script src="agregaract.js"></script>
+<script src="{{ url_for('static', filename='js/region_comuna.js') }}"></script>
+<script src="{{ url_for('static', filename='js/agregaract.js') }}"></script>
+<script src="{{ url_for('static', filename='js/region-comunas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/fechayhora.js') }}"></script>
+<script src="{{ url_for('static', filename='js/agregatfoto.js') }}"></script>
 
+<script>
+function confirmarEnvio() {
+    document.getElementById("formulario-container").style.display = "none";
+    document.getElementById("confirmacion").style.display = "block";
+}
+
+function procesarConfirmacion(confirmado) {
+    if (confirmado) {
+        document.getElementById("formulario").submit();
+    } else {
+        document.getElementById("confirmacion").style.display = "none";
+        document.getElementById("formulario-container").style.display = "block";
+    }
+}
+</script>
+
+{% if exito %}
+<script>
+    //sacamos el formulario
+  document.getElementById('formulario').style.display = 'none';  
+  document.getElementById('titulo').style.display = 'none';
+  document.getElementById('boton-volver').style.display = 'none';
+
+  setTimeout(() => {
+    window.location.href = "{{ url_for('portada') }}";
+  }, 2000); // 2000 ms = 2 segundos
+</script>
+{% endif %}
 
 </body>
 </html>

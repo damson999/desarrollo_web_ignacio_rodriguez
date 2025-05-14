@@ -1,5 +1,4 @@
 from flask import Flask, request, render_template, redirect, url_for, session
-from utils.validations import validate_login_user, validate_register_user, validate_confession
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
@@ -15,116 +14,63 @@ app.secret_key = "s3cr3t_k3y"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
 
-# --- Auth Routes ---
-@app.route("/register", methods=["GET", "POST"])
-def register():
+
+@app.route('/')
+def portada():
+    return render_template('index.html')
+
+@app.route('/agregar_actividad', methods=["GET", "POST"])
+def agregar_actividad():
+    
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("contrasenna")
-        email = request.form.get("email")
-        error = ""
-        if validate_register_user(username, password, email):
-            # try to register user
-            status, msg = db.register_user(username, password, email)
-            if status:
-                # set user field in session
-                session["user"] = username
-                return redirect(url_for("index"))
-            error += msg
-        else:
-            error += "Uno de los campos no es valido."
+        session = db.SessionLocal()
+        try:
+            nueva_actividad = db.Actividad(
+                nombre=request.form['nombre'],
+                sector=request.form['sector'],
+                email=request.form['email'],
+                celular=request.form['celular'],
+                dia_hora_inicio=request.form['inicio'],
+                dia_hora_termino=request.form['termino'],
+                descripcion=request.form['descripcion'],
+                comuna_id=request.form['comuna']
+            )
+            session.add(nueva_actividad)
+            session.commit()
+            return render_template('agregar-actividad.html', exito=True)
+        except Exception as e:
+            session.rollback()
+            return f"Error al guardar: {e}"
+        finally:
+            session.close()
 
-        return render_template("auth/register.html", error=error)
-    
-    elif request.method == "GET":
-        if session.get("user", None):
-            return redirect(url_for("index"))
-        else:
-            return render_template("auth/register.html")
+    return render_template('agregar-actividad.html')
 
+@app.route('/listado-actividades', methods=["GET", "POST"])
+def listado_actividades():
+    return render_template('listado-actividades.html')   
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("contrasenna")
-        error = ""
-        if validate_login_user(username, password):
-            # try to login
-            status, msg = db.login_user(username, password)
-            if status:
-                # set user field in session
-                session["user"] = username
-                return redirect(url_for("index"))
-            error += msg
-        else:
-            error += "Uno de los campos no es valido."
+@app.route('/estadisticas', methods=["GET", "POST"])
+def estadisticas():
+    return render_template('estadisticas.html')
 
-        print(error)
+@app.route('/informacion-fila1', methods=["GET", "POST"])
+def informacionf1():
+    return render_template('informacion-fila1.html')
 
-        return render_template("auth/login.html",error=error)
-    
-    elif request.method == "GET":
-        if session.get("user", None):
-            return redirect(url_for("index"))
-        else:
-            return render_template("auth/login.html")
+@app.route('/informacion-fila2', methods=["GET", "POST"])
+def informacionf2():
+    return render_template('informacion-fila2.html')
 
-@app.route("/logout", methods=["GET"])
-def logout():
-    session.pop("user", None)
-    return redirect(url_for("login"))
+@app.route('/informacion-fila3', methods=["GET", "POST"])
+def informacionf3():
+    return render_template('informacion-fila3.html')
 
+@app.route('/informacion-fila4', methods=["GET", "POST"])
+def informacionf4():
+    return render_template('informacion-fila4.html')
 
+@app.route('/informacion-fila5', methods=["GET", "POST"])
+def informacionf5():
+    return render_template('informacion-fila5.html')
 
-# --- Routes ---
-@app.route("/", methods=["GET"])
-def index():
-    user = session.get("user", None)
-    if not user:
-        return redirect(url_for("login"))
-    
-    # get last confessions 
-    data = []
-    for conf in db.get_confessions(page_size=3):
-        user = db.get_user_by_id(conf.user_id)
-
-        img_filename = f"uploads/{conf.conf_img}"
-        data.append({
-            "author": user.username,
-            "content": conf.conf_text,
-            "path_image": url_for('static', filename=img_filename)
-        })
-    
-    return render_template("confessions/confessions.html", data=data)
-
-@app.route("/post-conf", methods=["POST"])
-def post_conf():
-    username = session.get("user", None)
-    if username is None:
-        return redirect(url_for("login"))
-
-    conf_text = request.form.get("conf-text")
-    conf_img = request.files.get("conf-img")
-
-    if validate_confession(conf_text, conf_img):
-        # 1. generate random name for img
-        _filename = hashlib.sha256(
-            secure_filename(conf_img.filename) # nombre del archivo
-            .encode("utf-8") # encodear a bytes
-            ).hexdigest()
-        _extension = filetype.guess(conf_img).extension
-        img_filename = f"{_filename}.{_extension}"
-
-        # 2. save img as a file
-        conf_img.save(os.path.join(app.config["UPLOAD_FOLDER"], img_filename))
-
-        # 3. save confession in db
-        user = db.get_user_by_username(username)
-        db.create_confession(conf_text, img_filename, user.id)
-
-    return redirect(url_for("index"))
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

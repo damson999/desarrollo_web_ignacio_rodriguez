@@ -1,9 +1,10 @@
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, Enum
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+import enum
 
-DB_NAME = "confessions_db"
-DB_USERNAME = "dbadmin"
-DB_PASSWORD = "dbadmin"
+DB_NAME = "tarea2"
+DB_USERNAME = "cc5002"
+DB_PASSWORD = "programacionweb"
 DB_HOST = "localhost"
 DB_PORT = 3306
 
@@ -14,84 +15,91 @@ SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
+# --- ENUMS ---
+class TemaEnum(str, enum.Enum):
+    medio_ambiente = "medio_ambiente"
+    seguridad = "seguridad"
+    salud = "salud"
+    educacion = "educacion"
+    otro = "otro"
+
+class ContactoEnum(str, enum.Enum):
+    email = "email"
+    celular = "celular"
+    otro = "otro"
+
 # --- Models ---
 
-class Usuario(Base):
-    __tablename__ = 'usuarios'
+class Region(Base):
+    __tablename__ = 'region'
 
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    username = Column(String(255), nullable=False)
-    email = Column(String(255), nullable=False)
-    password = Column(String(255), nullable=False)
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(200), nullable=False)
 
-    confesiones = relationship("Confesion", back_populates="usuario", cascade="all, delete")
+    comunas = relationship("Comuna", back_populates="region")
 
-class Confesion(Base):
-    __tablename__ = 'confesiones'
 
-    id = Column(BigInteger, primary_key=True, autoincrement=True)
-    conf_text = Column(String(255), nullable=False)
-    conf_img = Column(String(255), nullable=False)
-    user_id = Column(BigInteger, ForeignKey('usuarios.id'), nullable=False)
+class Comuna(Base):
+    __tablename__ = 'comuna'
 
-    usuario = relationship("Usuario", back_populates="confesiones")
+    id = Column(Integer, primary_key=True)
+    nombre = Column(String(200), nullable=False)
+    region_id = Column(Integer, ForeignKey('region.id'), nullable=False)
+
+    region = relationship("Region", back_populates="comunas")
+    actividades = relationship("Actividad", back_populates="comuna")
+
+
+class Actividad(Base):
+    __tablename__ = 'actividad'
+
+    id = Column(Integer, primary_key=True)
+    comuna_id = Column(Integer, ForeignKey('comuna.id'), nullable=False)
+    sector = Column(String(100))
+    nombre = Column(String(200), nullable=False)
+    email = Column(String(100), nullable=False)
+    celular = Column(String(15))
+    dia_hora_inicio = Column(DateTime, nullable=False)
+    dia_hora_termino = Column(DateTime)
+    descripcion = Column(String(500))
+
+    comuna = relationship("Comuna", back_populates="actividades")
+    temas = relationship("ActividadTema", back_populates="actividad", cascade="all, delete-orphan")
+    contactos = relationship("ContactarPor", back_populates="actividad", cascade="all, delete-orphan")
+    fotos = relationship("Foto", back_populates="actividad", cascade="all, delete-orphan")
+
+
+class ActividadTema(Base):
+    __tablename__ = 'actividad_tema'
+
+    id = Column(Integer, primary_key=True)
+    tema = Column(Enum(TemaEnum), nullable=False)
+    glosa_otro = Column(String(15))
+    actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="temas")
+
+
+class ContactarPor(Base):
+    __tablename__ = 'contactar_por'
+
+    id = Column(Integer, primary_key=True)
+    nombre = Column(Enum(ContactoEnum), nullable=False)
+    identificador = Column(String(150))
+    actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="contactos")
+
+class Foto(Base):
+    __tablename__ = 'foto'
+
+    id = Column(Integer, primary_key=True)
+    ruta_archivo = Column(String(300), nullable=False)
+    nombre_archivo = Column(String(300), nullable=False)
+    actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="fotos")
 
 # --- Database Functions ---
 
-def get_user_by_id(id):
-    session = SessionLocal()
-    user = session.query(Usuario).filter_by(id=id).first()
-    session.close()
-    return user
 
-def get_user_by_email(email):
-    session = SessionLocal()
-    user = session.query(Usuario).filter_by(email=email).first()
-    session.close()
-    return user
-
-def get_user_by_username(username):
-    session = SessionLocal()
-    user = session.query(Usuario).filter_by(username=username).first()
-    session.close()
-    return user
-
-def create_user(username, password, email):
-    session = SessionLocal()
-    new_user = Usuario(username=username, password=password, email=email)
-    session.add(new_user)
-    session.commit()
-    session.close()
-
-def get_confessions(page_size):
-    session = SessionLocal()
-    confesiones = session.query(Confesion).limit(page_size).all()
-    session.close()
-    return confesiones
-
-def create_confession(conf_text, conf_img, user_id):
-    session = SessionLocal()
-    new_confession = Confesion(conf_text=conf_text, conf_img=conf_img, user_id=user_id)
-    session.add(new_confession)
-    session.commit()
-    session.close()
-
-def register_user(username, password, email):
-    if get_user_by_email(email) is not None:
-        return False, "El correo ya esta en uso."
-    
-    if get_user_by_username(username) is not None:
-        return False, "El nombre de usuario esta en uso."
-    
-    create_user(username, password, email)
-    return True, None
-
-def login_user(username, password):
-    a_user = get_user_by_username(username)
-    if a_user is None:
-        return False, "Usuario o contraseña incorrectos."
-    
-    if a_user.password != password:
-        return False, "Usuario o contraseña incorrectos."
-    
-    return True, None

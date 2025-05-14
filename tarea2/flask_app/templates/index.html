@@ -45,11 +45,11 @@
     
     <div class="menu">
           
-        <button onclick="location.href='agregar-actividad.html'">Agregar Actividad</button> 
+        <button onclick="location.href='{{ url_for('agregar_actividad') }}'">Agregar Actividad</button>
+       
+        <button onclick="location.href='{{ url_for('listado_actividades') }}'">Ver listado de actividades</button> 
         
-        <button onclick="location.href='listado-actividades.html'">Ver listado de actividades</button> 
-        
-        <button onclick="location.href='estadisticas.html'">Estadísticas</button> 
+        <button onclick="location.href='{{ url_for('estadisticas') }}'">Estadísticas</button> 
 
     </div>
     

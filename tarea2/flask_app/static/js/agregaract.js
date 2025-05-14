@@ -22,6 +22,3 @@ function procesarConfirmacion(acepta) {
 }
 
 
-function volverAPortada() {
-  window.location.href = 'index.html'; 
-}
