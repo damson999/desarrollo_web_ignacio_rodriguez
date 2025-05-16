@@ -83,6 +83,12 @@
         <p><strong>Sector:</strong> {{ actividad.sector}} </p>
         <p><strong>Email:</strong> {{actividad.email}} </p>
         <p><strong>Tel:</strong> {{actividad.celular}} </p>
+        <p><strong>Contactos:</strong></p>
+        <ul>
+            {% for contacto in actividad.contactos %}
+            <li>{{ contacto.nombre.value }}: {{ contacto.identificador }}</li>
+            {% endfor %}
+        </ul>
         <p><strong>Organizador: </strong> {{actividad.nombre}} </p>
 
     </div>
@@ -99,29 +105,20 @@
         {% else %}
             No hay fotos
         {% endfor %}
-        </p>
+        
 
     </div>
     
     <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color: rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index: 1000;">
         <div style="position:relative;">
-            <img id="imagenAmpliada" src="" width="800" height="600" style="display:block; margin:auto;">
+            <img id="imagenAmpliada" src="#" alt="imagenAmpliada"  width="800" height="600" style="display:block; margin:auto;">
             <button onclick="cerrarImagen()" style="position:absolute; top:10px; right:10px; padding:10px 15px; font-size:16px; background-color:#2980b9; border:none; cursor:pointer; color: rgb(255, 255, 255);"> Cerrar </button>
         </div>
     </div>
 
     <a href="{{ url_for('listado_actividades') }}">Volver al listado</a>
-
-    <script>
-    function mostrarImagen(src) {
-        document.getElementById("imagenAmpliada").src = src;
-        document.getElementById("modal").style.display = "flex";
-    }
-
-    function cerrarImagen() {
-        document.getElementById("modal").style.display = "none";
-    }
-    </script>
     
+    <script src="{{ url_for('static', filename='js/foto.js') }}"></script>
+
 </body>
 </html>

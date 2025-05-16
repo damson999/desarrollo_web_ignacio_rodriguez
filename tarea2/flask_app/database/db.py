@@ -29,9 +29,9 @@ class TemaEnum(str, enum.Enum):
     otro = "otro"
 
 class ContactoEnum(str, enum.Enum):
-    whatsApp = "whatsapp"
+    whatsapp = "whatsapp"
     telegram = "telegram"
-    x = "x"
+    X = "X"
     instagram = "instagram"
     tiktok = "tiktok"
     otra = "otra"
