@@ -17,7 +17,22 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def portada():
-    return render_template('index.html')
+
+    session = db.SessionLocal()
+    try:
+        actividades = (session.query(db.Actividad).order_by(db.Actividad.id.desc()).limit(5).all())
+        datos = []
+
+        for actividad in actividades:
+            comuna = session.query(db.Comuna.nombre).filter_by(id=actividad.comuna_id).scalar()
+            temas = session.query(db.ActividadTema).filter_by(actividad_id=actividad.id).all()
+            fotos = session.query(db.Foto).filter_by(actividad_id=actividad.id).all()
+            datos.append((actividad, comuna, temas, fotos))
+
+        return render_template("index.html", datos=datos)
+    
+    finally:
+        session.close()
 
 @app.route('/agregar_actividad', methods=["GET", "POST"])
 def agregar_actividad():
@@ -36,8 +51,62 @@ def agregar_actividad():
                 comuna_id=request.form['comuna']
             )
             session.add(nueva_actividad)
+            session.flush()
+
+            #Guardamos temas
+            temas = request.form.getlist('tema[]')
+            glosas = request.form.getlist('tema_otro[]')
+            
+            for i in range(len(temas)):
+                tema = temas[i].strip().lower()
+                glosa = glosas[i].strip() if i < len(glosas) else ''
+
+                if tema == "otro":
+                    actividad_tema = db.ActividadTema(
+                        actividad_id=nueva_actividad.id,
+                        tema="otro",  
+                        glosa_otro=glosa if glosa else None
+                    )
+                else:
+                    actividad_tema = db.ActividadTema(
+                        actividad_id=nueva_actividad.id,
+                        tema=tema,
+                        glosa_otro=None
+                    )
+                
+                session.add(actividad_tema)
+
+            #Guardamos contactos
+            contactos = request.form.getlist('contacto[]')
+            ids_contacto = request.form.getlist('contacto_id[]')
+            for i in range(len(contactos)):
+                medio = contactos[i]
+                identificador = ids_contacto[i].strip()
+                if medio and identificador:
+                    actividad_contacto = db.ContactarPor(
+                        actividad_id=nueva_actividad.id,
+                        nombre=medio,
+                        identificador=identificador
+                    )
+                    session.add(actividad_contacto)
+
+            #Guardamos fotos
+            fotos = request.files.getlist('fotos[]')
+            for foto in fotos:
+                if foto and foto.filename:
+                    filename = secure_filename(foto.filename)
+                    ruta = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                    foto.save(ruta)
+                    actividad_foto = db.Foto(
+                        actividad_id=nueva_actividad.id,
+                        ruta_archivo=ruta,
+                        nombre_archivo=filename
+                    )
+                    session.add(actividad_foto)
+
             session.commit()
             return render_template('agregar-actividad.html', exito=True)
+        
         except Exception as e:
             session.rollback()
             return f"Error al guardar: {e}"
@@ -48,29 +117,53 @@ def agregar_actividad():
 
 @app.route('/listado-actividades', methods=["GET", "POST"])
 def listado_actividades():
-    return render_template('listado-actividades.html')   
+    
+    session = db.SessionLocal()
+    try:
+        # Obtener número de página de la URL (por defecto página 1)
+        pagina = int(request.args.get('pagina', 1))
+        actividades_por_pagina = 5
+        offset = (pagina - 1) * actividades_por_pagina
+
+        total_actividades = session.query(db.Actividad).count()
+        actividades = (
+            session.query(db.Actividad)
+            .order_by(db.Actividad.id.desc())
+            .offset(offset)
+            .limit(actividades_por_pagina)
+            .all()
+        )
+
+        datos = []
+        for actividad in actividades:
+            comuna = session.query(db.Comuna.nombre).filter_by(id=actividad.comuna_id).scalar()
+            temas = session.query(db.ActividadTema).filter_by(actividad_id=actividad.id).all()
+            fotos = session.query(db.Foto).filter_by(actividad_id=actividad.id).all()
+            datos.append((actividad, comuna, temas, fotos))
+
+        total_paginas = (total_actividades + actividades_por_pagina - 1) // actividades_por_pagina
+
+        return render_template("listado-actividades.html", datos=datos, pagina=pagina, total_paginas=total_paginas)
+    finally:
+        session.close()   
 
 @app.route('/estadisticas', methods=["GET", "POST"])
 def estadisticas():
     return render_template('estadisticas.html')
 
-@app.route('/informacion-fila1', methods=["GET", "POST"])
-def informacionf1():
-    return render_template('informacion-fila1.html')
+@app.route('/actividad/<int:actividad_id>')
+def detalle_actividad(actividad_id):
+    session = db.SessionLocal()
+    try:
+        actividad = session.query(db.Actividad).filter_by(id=actividad_id).first()
+        if not actividad:
+            return "Actividad no encontrada", 404
 
-@app.route('/informacion-fila2', methods=["GET", "POST"])
-def informacionf2():
-    return render_template('informacion-fila2.html')
+        comuna = session.query(db.Comuna.nombre).filter_by(id=actividad.comuna_id).scalar()
+        temas = session.query(db.ActividadTema).filter_by(actividad_id=actividad.id).all()
+        fotos = session.query(db.Foto).filter_by(actividad_id=actividad.id).all()
 
-@app.route('/informacion-fila3', methods=["GET", "POST"])
-def informacionf3():
-    return render_template('informacion-fila3.html')
-
-@app.route('/informacion-fila4', methods=["GET", "POST"])
-def informacionf4():
-    return render_template('informacion-fila4.html')
-
-@app.route('/informacion-fila5', methods=["GET", "POST"])
-def informacionf5():
-    return render_template('informacion-fila5.html')
+        return render_template("detalle_actividad.html", actividad=actividad, comuna=comuna, temas=temas, fotos=fotos)
+    finally:
+        session.close()
 

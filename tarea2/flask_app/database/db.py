@@ -15,18 +15,26 @@ SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
-# --- ENUMS ---
+# --- ENUMS --- CAMBIAR ESTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 class TemaEnum(str, enum.Enum):
-    medio_ambiente = "medio_ambiente"
-    seguridad = "seguridad"
-    salud = "salud"
-    educacion = "educacion"
+    música = "música"
+    deporte = "deporte"
+    ciencias = "ciencias"
+    religión = "religión"
+    política = "política"
+    tecnología = "tecnología"
+    juegos = "juegos"
+    baile = "baile"
+    comida = "comida"
     otro = "otro"
 
 class ContactoEnum(str, enum.Enum):
-    email = "email"
-    celular = "celular"
-    otro = "otro"
+    whatsApp = "whatsapp"
+    telegram = "telegram"
+    x = "x"
+    instagram = "instagram"
+    tiktok = "tiktok"
+    otra = "otra"
 
 # --- Models ---
 

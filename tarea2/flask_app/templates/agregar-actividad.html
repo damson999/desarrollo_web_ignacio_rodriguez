@@ -77,20 +77,24 @@
             <tr>
                 <td>Contactar por</td>
                 <td>
-                    <select name="contacto">
-                        <option value="whatsapp">WhatsApp</option>
-                        <option value="telegram">Telegram</option>
-                        <option value="x">X</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="tiktok">TikTok</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                    <input type="text" name="contacto_id" placeholder="ID o URL" minlength="4" maxlength="50">
+                    <div id="contacto-container">
+                        <div class="contacto-grupo">
+                            <select name="contacto[]">
+                                <option value="whatsapp">WhatsApp</option>
+                                <option value="telegram">Telegram</option>
+                                <option value="x">X</option>
+                                <option value="instagram">Instagram</option>
+                                <option value="tiktok">TikTok</option>
+                                <option value="otra">Otro</option>
+                            </select>
+                            <input type="text" name="contacto_id[]" placeholder="ID o URL" minlength="4" maxlength="50">
+                        </div>
+                    </div>
+                    <button type="button" onclick="agregarContacto()">Agregar otro contacto</button>
                 </td>
             </tr>
         </table>
 
- 
         <h3>¿Cuándo y de qué trata?</h3>
         
         <table>
@@ -113,27 +117,32 @@
             <tr>
                 <td>Tema</td>
                 <td>
-                    <select name="tema" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="musica">Música</option>
-                        <option value="deporte">Deporte</option>
-                        <option value="ciencias">Ciencias</option>
-                        <option value="religion">Religión</option>
-                        <option value="politica">Política</option>
-                        <option value="tecnologia">Tecnología</option>
-                        <option value="juegos">Juegos</option>
-                        <option value="baile">Baile</option>
-                        <option value="comida">Comida</option>
-                        <option value="otro">Otro</option>
-                    </select>
-                    <input type="text" name="tema_otro" placeholder="Especifique si es 'Otro'" minlength="3" maxlength="15">
+                    <div id="tema-container">
+                        <div class="tema-grupo">
+                            <select name="tema[]" onchange="mostrarInputOtro(this)" required>
+                                <option value="">Seleccione una opción</option>
+                                <option value="música">Música</option>
+                                <option value="deporte">Deporte</option>
+                                <option value="ciencias">Ciencias</option>
+                                <option value="religión">Religión</option>
+                                <option value="política">Política</option>
+                                <option value="tecnología">Tecnología</option>
+                                <option value="juegos">Juegos</option>
+                                <option value="baile">Baile</option>
+                                <option value="comida">Comida</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <input type="text" name="tema_otro[]" placeholder="Especifique si es 'Otro'" style="display:none;" minlength="3" maxlength="15">
+                        </div>
+                    </div>
+                    <button type="button" onclick="agregarTema()">Agregar otro tema</button>
                 </td>
             </tr>
             <tr>
                 <td>Fotos</td>   
                 <td>
                     <div id="foto-container">
-                        <input type="file" name="fotos[]" accept="image/*" required>
+                        <input type="file" name="fotos[]" accept="image/*" multiple required>
                     </div>
                     <br>
                     <button type="button" onclick="agregarFoto()">Agregar otra foto</button>
@@ -167,6 +176,7 @@
 <script src="{{ url_for('static', filename='js/region-comunas.js') }}"></script>
 <script src="{{ url_for('static', filename='js/fechayhora.js') }}"></script>
 <script src="{{ url_for('static', filename='js/agregatfoto.js') }}"></script>
+<script src="{{ url_for('static', filename='js/agregartyc.js') }}"></script>
 
 <script>
 function confirmarEnvio() {

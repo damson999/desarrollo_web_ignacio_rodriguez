@@ -64,47 +64,30 @@
             <th>Tema</th>
             <th>Foto</th>
         </tr>
+        {% for actividad, comuna, temas, fotos in datos %}
         <tr>
-            <td>2025-05-20</td>
-            <td>2025-12-07</td>
-            <td>Independencia</td>
-            <td>Frente a farmacia Dr.Simi</td>
-            <td>Escuela de Boxeo</td>
-            <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHWHg1ly-ndj0a42aD30f1z_XKrMYzV5pyoA&usqp=CAU" alt="Boxeador" ></td>
+            <td>{{ actividad.dia_hora_inicio.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ actividad.dia_hora_termino.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ comuna }}</td>
+            <td>{{ actividad.sector }}</td>
+            <td>
+                {% for tema in temas %}
+                    {{ tema.tema.value }}
+                    {% if tema.tema.value == 'otro' and tema.glosa_otro %}
+                        - {{ tema.glosa_otro }}
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            </td>
+            <td>
+                {% if fotos %}
+                    <img src="{{ url_for('static', filename='uploads/' + fotos[0].nombre_archivo) }}" alt="foto" width="200">
+                {% else %}
+                    Sin foto
+                {% endif %}
+            </td>
         </tr>
-        <tr>
-            <td>2025-07-15</td>
-            <td>2025-09-15</td>
-            <td>Santiago</td>
-            <td>Parque los reyes</td>
-            <td>Entrenamiento para fisico culturismo</td>
-            <td><img src="https://i.redd.it/ysac4eqmv52d1.jpeg" alt="Fisico culturistas" style="width: 243px; height: auto;"></td>
-        </tr>
-        <tr>
-            <td>2025-08-04</td>
-            <td>2025-10-01</td>
-            <td>Santiago</td>
-            <td>Beauchef 851</td>
-            <td>Taller de dibujo manga</td>
-            <td><img src="https://www.libreriacodex.com/es/imagenes/9788441/978844154712.GIF" alt = "Libro tutorial de manga" style="width: 243px; height: auto;"></td>
-        </tr>
-        <tr>
-            <td>2026-01-01</td>
-            <td>2026-03-10</td>
-            <td>Santiago</td>
-            <td>Parque O'higgins</td>
-            <td>Curso de Skateboard</td>
-            <td><img src="https://www.shitpostbot.com/resize/250/250?img=%2Fimg%2Fsourceimages%2Fsome-mexican-kid-on-a-skateboard-57e89eb58655c.jpeg" alt="Skateboarder" style="width: 243px; height: auto;"></td>
-        </tr>
-        <tr>
-            <td>2025-09-11</td>
-            <td>2026-03-05</td>
-            <td>Puente alto</td>
-            <td>El castillo</td>
-            <td>Clases de canto</td>
-            <td><img src="https://i.ibb.co/L0xZN1v/428618913-1441209733420212-2012445789643800156-n.jpg" alt="cantante" style="width: 243px; height: auto;"></td>
-        </tr>
-    
+        {% endfor %}
     </table>
 
 </body>
