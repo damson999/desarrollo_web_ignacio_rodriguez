@@ -2,7 +2,6 @@ import re
 import filetype
 from datetime import datetime
 
-# Validaciones geográficas
 def validate_region(region):
     return bool(region)
 
@@ -12,7 +11,7 @@ def validate_comuna(comuna):
 def validate_sector(sector):
     return len(sector) <= 100
 
-# Validaciones de organizador
+
 def validate_nombre(nombre):
     return bool(nombre) and len(nombre) <= 200
 
@@ -22,13 +21,13 @@ def validate_email(email):
 
 def validate_celular(celular):
     if not celular:
-        return True  # Es opcional
+        return True  
     pattern = r'^\+\d{3}\.\d{8}$'
     return re.match(pattern, celular)
 
 def validate_contactos(contactos, ids):
     if not contactos and not ids:
-        return True  # es opcional
+        return True  
     if len(contactos) > 5:
         return False
     for id_ in ids:
@@ -36,7 +35,7 @@ def validate_contactos(contactos, ids):
             return False
     return True
 
-# Validaciones de tiempo
+
 def validate_fecha_hora_inicio(inicio):
     try:
         datetime.strptime(inicio, '%Y-%m-%dT%H:%M')
@@ -54,11 +53,11 @@ def validate_fecha_hora_termino(inicio, termino):
     except ValueError:
         return False
 
-# Validación de descripción
-def validate_descripcion(descripcion):
-    return True  # Es opcional, no hay restricción de longitud aquí
 
-# Validación de tema
+def validate_descripcion(descripcion):
+    return True  
+
+
 def validate_temas(temas, temas_otro):
     if not temas:
         return False
@@ -68,7 +67,7 @@ def validate_temas(temas, temas_otro):
                 return False
     return True
 
-# Validación de fotos
+
 def validate_fotos(fotos):
     if not fotos or not (1 <= len(fotos) <= 5):
         return False

@@ -68,7 +68,7 @@ def agregar_actividad():
         if not validate_contactos(contactos, contacto_ids): errores.append("Ingrese hasta 5 medios de contacto con identificadores válidos.")
         if not validate_fecha_hora_inicio(inicio): errores.append("La fecha y hora de inicio es obligatoria y debe ser válida.")
         if not validate_fecha_hora_termino(inicio, termino): errores.append("La fecha de término debe ser posterior a la de inicio.")
-        if not validate_temas(temas, temas_otro): errores.append("Debe seleccionar al menos un tema. Si selecciona 'Otro', debe escribir entre 3 y 15 caracteres.")
+        if not validate_temas(temas, temas_otro): errores.append("Debe seleccionar al menos un tema.")
         if not validate_fotos(fotos): errores.append("Debe subir entre 1 y 5 imágenes válidas.")
 
         if errores:

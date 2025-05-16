@@ -15,7 +15,7 @@ SessionLocal = sessionmaker(bind=engine)
 
 Base = declarative_base()
 
-# --- ENUMS --- CAMBIAR ESTOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
+# --- ENUMS --- 
 class TemaEnum(str, enum.Enum):
     música = "música"
     deporte = "deporte"
@@ -108,6 +108,5 @@ class Foto(Base):
 
     actividad = relationship("Actividad", back_populates="fotos")
 
-# --- Database Functions ---
 
 
