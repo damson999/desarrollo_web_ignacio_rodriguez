@@ -76,3 +76,14 @@ def validate_fotos(fotos):
         if not kind or kind.mime.split('/')[0] != 'image':
             return False
     return True
+
+
+def validar_nombre_comentario(nombre):
+    if not nombre or len(nombre) < 3 or len(nombre) > 80:
+        return False
+    return True
+
+def validar_texto_comentario(texto):
+    if not texto or len(texto) < 5:
+        return False
+    return True    

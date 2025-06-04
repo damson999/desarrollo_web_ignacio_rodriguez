@@ -21,20 +21,23 @@
 
 
     <h2>Actividades por día</h2>
-    <img src="{{ url_for('static', filename='uploads/grafico-lineas.png') }}" alt="Gráfico de Líneas: Actividades por Día">
+    <div id="graficoLineas" style="width: 600px; height: 400px;"></div>    
 
 
     <h2>Actividades por tipo</h2>
-    <img src="{{ url_for('static', filename='uploads/grafico-torta.png') }}" alt="Gráfico de Torta: Actividades por Tipo">
+    <div id="graficoTorta" style="width: 600px; height: 400px;"></div>
 
 
     <h2>Actividades por mes y hora</h2>
-    <img src="{{ url_for('static', filename='uploads/grafico-barras.png') }}" alt="Gráfico de Barras: Actividades por Mes y Hora">
+    <div id="graficoBarras" style="width: 600px; height: 400px;"></div>
 
 
     <br><br>
 
     <a href="{{ url_for('portada') }}">Volver a la portada</a>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="{{ url_for('static', filename='js/graficos.js') }}"></script>
+
 
 </body>
 </html>

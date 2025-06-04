@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from datetime import time
 from database import db
 from werkzeug.utils import secure_filename
 import hashlib
@@ -203,4 +204,126 @@ def detalle_actividad(actividad_id):
         return render_template("detalle_actividad.html", actividad=actividad, comuna=comuna, temas=temas, fotos=fotos)
     finally:
         session.close()
+
+
+#Acá comienza la parte para la tarea 3 --------------------------------------------------------------------------------------------
+
+
+@app.route("/api/actividades_por_dia")
+def actividades_por_dia():
+    session = db.SessionLocal()
+    datos = session.query(
+        db.func.date(db.Actividad.dia_hora_inicio).label("fecha"),
+        db.func.count(db.Actividad.id)
+    ).group_by("fecha").order_by("fecha").all()
+    session.close()
+    return jsonify({
+        "fechas": [str(fecha) for fecha, _ in datos],
+        "cantidades": [cantidad for _, cantidad in datos]
+    })
+
+
+@app.route("/api/actividades_por_tema")
+def actividades_por_tema():
+    session = db.SessionLocal()
+    datos = session.query(
+        db.ActividadTema.tema,
+        db.func.count(db.ActividadTema.id)
+    ).group_by(db.ActividadTema.tema).all()
+    session.close()
+    return jsonify({
+        "temas": [tema for tema, _ in datos],
+        "cantidades": [cantidad for _, cantidad in datos]
+    })
+
+
+@app.route("/api/actividades_por_mes_hora")
+def actividades_por_mes_hora():
+    session = db.SessionLocal()
+    datos = session.query(
+        db.extract('month', db.Actividad.dia_hora_inicio).label("mes"),
+        db.Actividad.dia_hora_inicio
+    ).all()
+    session.close()
+
+    # Inicializar diccionario por mes
+    datos_por_mes = {m: {"mañana": 0, "mediodía": 0, "tarde": 0} for m in range(1, 13)}
+
+    for mes, fecha in datos:
+        hora = fecha.time()
+        if time(6, 0) <= hora < time(12, 0):
+            franja = "mañana"
+        elif hora == time(12, 0):
+            franja = "mediodía"
+        else:
+            franja = "tarde"
+        datos_por_mes[mes][franja] += 1
+
+    return jsonify({
+        "meses": list(range(1, 13)),
+        "mañana": [datos_por_mes[m]["mañana"] for m in range(1, 13)],
+        "mediodía": [datos_por_mes[m]["mediodía"] for m in range(1, 13)],
+        "tarde": [datos_por_mes[m]["tarde"] for m in range(1, 13)]
+    })
+
+
+@app.route("/actividad/<int:actividad_id>/comentario", methods=["POST"])
+def agregar_comentario(actividad_id):
+    nombre = request.form.get("nombre", "").strip()
+    texto = request.form.get("texto", "").strip()
+
+    #Agregamos las validaciones
+    errores = []
+
+    if not validar_nombre_comentario(nombre):
+        errores.append("El nombre debe tener entre 3 y 80 caracteres")
+
+    if not validar_texto_comentario(texto):
+        errores.append("El comentario debe tener al menos 5 caracteres")
+
+    if errores:
+        return jsonify({"success": False, "errores": errores}), 400  # código 400: Bad Request
+
+    # en base de datos
+    session = db.SessionLocal()
+    nuevo = db.Comentario(
+        nombre=nombre,
+        texto=texto,
+        fecha=datetime.now(),
+        actividad_id=actividad_id
+    )
+    session.add(nuevo)
+    session.commit()
+    session.refresh(nuevo)
+    session.close()
+
+    return jsonify({
+        "success": True,
+        "comentario": {
+            "nombre": nuevo.nombre,
+            "texto": nuevo.texto,
+            "fecha": nuevo.fecha.strftime('%Y-%m-%d %H:%M')
+        }
+    })
+
+@app.route("/actividad/<int:actividad_id>/comentarios", methods=["GET"])
+def obtener_comentarios(actividad_id):
+    session = db.SessionLocal()
+    comentarios = (
+        session.query(db.Comentario)
+        .filter_by(actividad_id=actividad_id)
+        .order_by(db.Comentario.fecha.desc())
+        .all()
+    )
+    resultado = [
+        {
+            "nombre": c.nombre,
+            "texto": c.texto,
+            "fecha": c.fecha.strftime('%Y-%m-%d %H:%M')
+        }
+        for c in comentarios
+    ]
+    session.close()
+    return jsonify(resultado)
+
 

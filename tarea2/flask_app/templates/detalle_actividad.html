@@ -116,8 +116,39 @@
         </div>
     </div>
 
-    <a href="{{ url_for('listado_actividades') }}">Volver al listado</a>
+    <br><br>
     
+    <div style="display: flex; gap: 20px;">
+        
+        <div style="flex: 1; border: 1px solid #ccc; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+            
+            <h3>Agregar comentario</h3>
+            <form id="formComentario" data-actividad-id="{{ actividad.id }}">
+                <label for="nombre">Nombre:</label><br>
+                <input type="text" name="nombre" id="nombre"><br><br>
+
+                <label for="texto">Comentario:</label><br>
+                <textarea name="texto" id="texto" rows="4" cols="50" ></textarea><br><br>
+
+                <button type="submit">Agregar comentario</button>
+            </form>
+            
+            <br>
+            
+            <div id="mensajes" style="color: green;"></div>
+        </div>    
+
+        <div style="flex: 1; border: 1px solid #ccc; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+
+                <h3>Comentarios</h3>
+                <ul id="listaComentarios" style="list-style: none; padding-left: 0;"></ul>
+
+        </div>
+        
+   </div>
+
+    <a href="{{ url_for('listado_actividades') }}">Volver al listado</a>
+    <script src="{{ url_for('static', filename='js/comentarios.js') }}"></script>
     <script src="{{ url_for('static', filename='js/foto.js') }}"></script>
 
 </body>

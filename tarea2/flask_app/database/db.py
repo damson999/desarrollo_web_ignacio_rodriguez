@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, Enum
+from sqlalchemy import create_engine, Column, Integer, BigInteger, String, ForeignKey, DateTime, Enum, func, extract
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 import enum
 
@@ -75,6 +75,7 @@ class Actividad(Base):
     temas = relationship("ActividadTema", back_populates="actividad", cascade="all, delete-orphan")
     contactos = relationship("ContactarPor", back_populates="actividad", cascade="all, delete-orphan")
     fotos = relationship("Foto", back_populates="actividad", cascade="all, delete-orphan")
+    comentarios = relationship("Comentario", back_populates="actividad", cascade="all, delete-orphan")
 
 
 class ActividadTema(Base):
@@ -107,6 +108,20 @@ class Foto(Base):
     actividad_id = Column(Integer, ForeignKey('actividad.id'), nullable=False)
 
     actividad = relationship("Actividad", back_populates="fotos")
+
+#Acá comienza el modelo para la tarea 3--------------------------------------------------------------------------------------------
+
+class Comentario(Base):
+    __tablename__ = 'comentario'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nombre = Column(String(80), nullable=False)
+    texto = Column(String(300), nullable=False)
+    fecha = Column(DateTime, nullable=False)
+    actividad_id = Column(Integer, ForeignKey("actividad.id"), nullable=False)
+
+    actividad = relationship("Actividad", back_populates="comentarios")
+
 
 
 
