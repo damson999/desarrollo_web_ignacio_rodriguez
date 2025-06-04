@@ -3,11 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("/api/actividades_por_dia")
     .then(res => res.json())
     .then(data => {
+      const seriesData = data.fechas.map((fecha, i) => [
+        new Date(fecha).getTime(),  // timestamp
+        data.cantidades[i]
+      ]);
       Highcharts.chart("graficoLineas", {
         chart: { type: "line" },
         title: { text: "Cantidad de actividades por día" },
         xAxis: { categories: data.fechas },
-        xAxis: {title:  {text: "Días"      } },
         yAxis: { title: { text: "Cantidad Actividades" } },
         series: [{
           name: "Actividades",
